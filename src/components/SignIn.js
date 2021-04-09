@@ -73,14 +73,24 @@ export default function SignIn({setName}) {
             name="name"
             autoFocus
             onChange={(e) => {setString(e.target.value)}}
+            onKeyDown={(e) => {
+              console.log({key: e.key});
+              if(e.key === 'Enter') {
+                setName(e.target.value)
+                e.preventDefault();
+              }
+            }}
           />
           <Button
-            type="submit"
+            type="button"
             fullWidth
             variant="contained"
             color="primary"
             className={classes.submit}
             disabled={disabled}
+            onClick={() => {
+              setName(string);
+            }}
           >
             はじめる
           </Button>
