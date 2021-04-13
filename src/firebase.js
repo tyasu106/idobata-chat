@@ -1,18 +1,27 @@
 import firebase from "firebase";
 
+const {
+  REACT_APP_FIREBASE_API_KEY,
+  REACT_APP_FIREBASE_AUTH_DOMAIN,
+  REACT_APP_FIREBASE_PROJECT_ID,
+  REACT_APP_FIREBASE_STRAGE_BUCKET,
+  REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
+  REACT_APP_FIREBASE_APPID,
+} = process.env;
+
 const firebaseConfig = {
-  apiKey: "AIzaSyDYOK48GkoAw2jdJDUfjglO72nm6k-Jco8",
-  authDomain: "idobata-chat-5bfb9.firebaseapp.com",
-  projectId: "idobata-chat-5bfb9",
-  storageBucket: "idobata-chat-5bfb9.appspot.com",
-  messagingSenderId: "707612334331",
-  appId: "1:707612334331:web:86fd1d5bbdada07ce5785e",
+  apiKey: REACT_APP_FIREBASE_API_KEY,
+  authDomain: REACT_APP_FIREBASE_AUTH_DOMAIN,
+  projectId: REACT_APP_FIREBASE_PROJECT_ID,
+  storageBucket: REACT_APP_FIREBASE_STRAGE_BUCKET,
+  messagingSenderId: REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
+  appId: REACT_APP_FIREBASE_APPID,
 };
 
 firebase.initializeApp(firebaseConfig);
 const database = firebase.database();
 const messagesRef = database.ref("messages");
 
-export const pushMessage = ({name, text}) => {
+export const pushMessage = ({ name, text }) => {
   messagesRef.push({ name, text });
 };
