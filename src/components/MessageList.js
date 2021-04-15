@@ -1,18 +1,18 @@
 import React, { useEffect, useState } from "react";
+import { List } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
+
+import MessageItem from './MessageItem'
 import { messagesRef } from "../firebase";
 
 const useStyles = makeStyles({
   root: {
     gridRow: 1,
+    width: '100%',
+    // 入力蘭が押し流されないようにする
+    overflow: 'auto',
   },
 });
-
-// firebaseから取得したデータ
-// key -MYCUlOTdhGKoAloXY6B: value {name: "toshi", text: "ffff"}
-//      ↓↓↓変更
-// 下記を要素とする配列を作っていく
-// {key -MYCUlOTdhGKoAloXY6B, value name: "toshi", text: "ffff"}
 
 const MessageList = () => {
   const [messages, setMessages] = useState([]);
@@ -21,20 +21,25 @@ const MessageList = () => {
   useEffect(() => {
     messagesRef
       .orderByKey()
-      .limitToLast(3)
+      .limitToLast(15)
       .on("value", (snapshot) => {
         const messages = snapshot.val();
         if (messages === null) return;
         const entries = Object.entries(messages);
         const newMessages = entries.map((entry) => {
           const [key, nameAndText] = entry;
-          // ... ← 展開する
           return { key, ...nameAndText };
         });
         setMessages(newMessages);
       });
   }, []);
-  return <div className={classes.root}>MessageList</div>;
+  return (
+    <List className={classes.root}>
+      {messages.map(({key, name, text}) => {
+        return <MessageItem key={key} name={name} text={text}>item</MessageItem>;
+      })}
+    </List>
+  );
 };
 
 export default MessageList;
